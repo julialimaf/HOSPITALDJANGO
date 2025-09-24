@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Sistema Hospital</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #34BFB4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #fff;
+            padding: 60px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            color: #34BFB4;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 300;
+        }
+        .welcome {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            text-align: center;
+            font-weight: 400;
+        }
+        h3 {
+            color: #34BFB4;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        li {
+            background: linear-gradient(135deg, #34BFB4, #2eaa9f);
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(52, 191, 180, 0.3);
+        }
+        a {
+            display: block;
+            padding: 30px 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-align: center;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Bem-vindo ao Sistema do Hospital</h2>
+        <p class="welcome">Olá, {{ user.first_name }} {{ user.last_name }}!</p>
+        
+        <h3>Opções Disponíveis:</h3>
+        <ul>
+            <li><a href="#">Agendar Consulta</a></li>
+            <li><a href="{% url 'meus_dados' %}">Meus Dados</a></li>
+            <li><a href="#">Ver Histórico</a></li>
+            <li><a href="#">Exames</a></li>
+        </ul>
+    </div>
+</body>
+</html>

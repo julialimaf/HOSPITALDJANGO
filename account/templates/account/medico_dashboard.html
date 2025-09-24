@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Médico - Sistema Hospital</title>
+</head>
+<body>
+    <h2>Dashboard Médico</h2>
+    <p>Bem-vindo, Dr. {{ user.first_name }} {{ user.last_name }}!</p>
+    <p>CRM: {{ user.crm }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Especialidade: {{ user.especialidade }}</p>
+    
+    <h3>Opções:</h3>
+    <ul>
+        <li><a href="#">Ver Agenda</a></li>
+        <li><a href="#">Pacientes</a></li>
+        <li><a href="#">Consultas</a></li>
+        <li><a href="#">Relatórios</a></li>
+    </ul>
+</body>
+</html>

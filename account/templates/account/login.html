@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - Sistema Hospital</title>
+</head>
+<body>
+    <h2>Login no Sistema do Hospital</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <p>
+            <label>CPF:</label>
+            <input type="text" name="cpf" required>
+        </p>
+        <p>
+            <label>Senha:</label>
+            <input type="password" name="password" required>
+        </p>
+        <button type="submit">Entrar</button>
+    </form>
+    <p><a href="{% url 'register' %}">Não tem conta? Cadastre-se</a></p>
+</body>
+</html>
