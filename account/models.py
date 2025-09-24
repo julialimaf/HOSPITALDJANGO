@@ -14,13 +14,26 @@ class CustomUserManager(BaseUserManager):
         else:
             user = self.model(crm=crm, email=email, **extra_fields)
         user.set_password(password)
-        user.save()
+        user.save(using=self._db)
         return user
     
     def create_superuser(self, cpf=None, crm=None, email=None, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(cpf=cpf, crm=crm, email=email, password=password, **extra_fields)
+
+class MedicoManager(BaseUserManager):
+    def create_user(self, crm, email, password=None, **extra_fields):
+        if not crm:
+            raise ValueError('CRM REQUIRED')
+        if not email:
+            raise ValueError('EMAIL REQUIRED')
+        
+        email = self.normalize_email(email)
+        user = self.model(crm=crm, email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
     
 class Pacient(AbstractUser):
     cpf = models.CharField(max_length=11, unique=True)
@@ -61,7 +74,7 @@ class Medico(AbstractUser):
 
     USERNAME_FIELD = 'crm'
     REQUIRED_FIELDS = ['email']
-    objects = CustomUserManager()
+    objects = MedicoManager()
     
     class Meta:
         db_table = 'account_medico'
