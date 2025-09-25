@@ -1,5 +1,5 @@
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
-from django.contrib.auth.models import AbstractUser , BaseUserManager
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, cpf=None, crm=None, email=None, password=None, **extra_fields):
@@ -34,7 +34,7 @@ class MedicoManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
-    
+
 class Pacient(AbstractUser):
     cpf = models.CharField(max_length=11, unique=True)
     email = models.EmailField(unique=True)
@@ -80,19 +80,30 @@ class Medico(AbstractUser):
         db_table = 'account_medico'
 
     def __str__(self):
-        return str(self.crm)
+        return f"Dr. {self.first_name} {self.last_name} - {self.especialidade}"
+
+import uuid
+
+class Consulta(models.Model):
+    num_consulta = models.CharField(max_length=8, unique=True, editable=False)
+    paciente = models.ForeignKey(Pacient, on_delete=models.CASCADE)
+    medico = models.ForeignKey(Medico, on_delete=models.CASCADE)
+    data_consulta = models.DateTimeField()
+    motivo = models.TextField(max_length=200, blank=True)
+    status = models.CharField(max_length=20, choices=[
+        ('agendada', 'Agendada'),
+        ('realizada', 'Realizada'),
+        ('cancelada', 'Cancelada')
+    ], default='agendada')
+    created_at = models.DateTimeField(auto_now_add=True)
     
-
-
-class Consultation(models.Model):
-    pacient = models.ForeignKey(Pacient, on_delete=models.CASCADE)
-    doctor = models.ForeignKey(Medico, on_delete=models.CASCADE)
-    date = models.DateField()
-    time = models.TimeField()
-    reason = models.TextField()
-
+    def save(self, *args, **kwargs):
+        if not self.num_consulta:
+            self.num_consulta = str(uuid.uuid4())[:8].upper()
+        super().save(*args, **kwargs)
+    
     class Meta:
-        db_table = 'account_consultation'
-
+        db_table = 'account_consulta'
+    
     def __str__(self):
-        return f"Consultation {self.id} - Pacient: {self.pacient.cpf} with Doctor: {self.doctor.crm} on {self.date} at {self.time}"
+        return f"#{self.num_consulta} - {self.paciente.first_name} - {self.medico.first_name}"

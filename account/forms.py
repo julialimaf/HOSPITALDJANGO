@@ -1,5 +1,5 @@
 from django import forms
-from .models import Pacient, Medico
+from .models import Pacient, Medico, Consulta
 
 class PacientRegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -45,3 +45,18 @@ class MedicoRegisterForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+class ConsultaForm(forms.ModelForm):
+    data_consulta = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}))
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['medico'].queryset = Medico.objects.all()
+        self.fields['medico'].empty_label = "Selecione um médico"
+    
+    class Meta:
+        model = Consulta
+        fields = ('medico', 'data_consulta', 'motivo')
+        widgets = {
+            'motivo': forms.Textarea(attrs={'rows': 3})
+        }
